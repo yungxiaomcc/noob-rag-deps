@@ -1,0 +1,52 @@
+[project]
+name = "noob-rag-deps"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "yungxiaomcc", email = "yungxiaomcc@gamil.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "deepmerge>=2.0",
+    "httpx>=0.20",
+    "langchain-milvus>=0.3.3",
+    "langchain-openai>=1.1.10",
+    "pydantic-settings>=2.13.1",
+    "pymilvus>=2.6.9",
+    "structlog>=24.1.0",
+]
+
+[project.optional-dependencies]
+otel = [
+    "opentelemetry-api>=1.28.0",
+    "opentelemetry-sdk>=1.28.0",
+    "opentelemetry-exporter-otlp-proto-http>=1.28.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "commitizen>=4.13.9",
+    "ipykernel>=7.2.0",
+    "pytest>=8.0",
+    "pytest-asyncio>=0.24",
+    "pytest-mock>=3.14",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+
+[tool.commitizen]
+name = "cz_conventional_commits" # 使用最通用的约定式提交规范
+version = "0.1.0" # 这里的初始版本号建议与 [project] 中的 version 一致
+tag_format = "v$version" # Git Tag 的格式，例如 v1.0.0
+version_files = [
+    "pyproject.toml:version" # 告诉它修改这里
+]
+update_changelog_on_bump = true  # 升级版本时自动更新 CHANGELOG.md

@@ -1,0 +1,48 @@
+[ noob_rag_deps ]
+
+
+[ noob_rag_deps.dense ]
+
+tei_base_url = "http://172.16.10.53:15021"
+max_concurrent_requests=32
+timeout= 10.0
+truncate= true
+
+
+[ noob_rag_deps.sparse ]
+
+tei_base_url = "http://172.16.10.53:15023"
+max_concurrent_requests=32
+timeout= 10.0
+truncate= true
+
+
+
+[ noob_rag_deps.reranking ]
+
+tei_base_url = "http://172.16.10.53:15022"
+max_concurrent_requests=32
+timeout= 10.0
+truncate= true
+
+
+[ noob_rag_deps.rag ]
+
+collection_name = "noob_rag"
+dense_dim = 1024
+
+[ noob_rag_deps.rag.milvus ]
+
+uri="http://172.16.10.53:58010"
+dbname='noob_rag_deps'
+
+[ noob_rag_deps.log ]
+
+level = "DEBUG"
+format = "json"
+queue_size = 10000
+service_name = "noob_rag_deps"
+file_path = "logs/noob_rag_deps.log"
+file_max_bytes = 10485760
+file_backup_count = 5
+
