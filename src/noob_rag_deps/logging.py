@@ -129,6 +129,7 @@ def setup_logging(config: LogConfig) -> None:
         *handlers,
         respect_handler_level=True,
     )
+    _LISTENER.start()
     queue_handler = logging.handlers.QueueHandler(_QUEUE)
 
     root = logging.getLogger()
