@@ -4,9 +4,12 @@
 [ noob_rag_deps.dense ]
 
 tei_base_url = "http://172.16.10.53:15021"
-max_concurrent_requests=32
-timeout= 10.0
-truncate= true
+max_concurrent_requests = 32
+timeout = 10.0
+truncate = true
+# 单次请求 token 上限与条数上限，避免 413 Payload Too Large
+max_tokens_per_request = 1024
+max_texts_per_request = 16
 
 
 [ noob_rag_deps.sparse ]
@@ -21,9 +24,11 @@ truncate= true
 [ noob_rag_deps.reranking ]
 
 tei_base_url = "http://172.16.10.53:15022"
-max_concurrent_requests=32
-timeout= 10.0
-truncate= true
+max_concurrent_requests = 32
+timeout = 10.0
+truncate = true
+max_tokens_per_request = 1024
+max_texts_per_request = 16
 
 
 [ noob_rag_deps.rag ]

@@ -32,9 +32,11 @@ class BaseConfig(BaseSettings):
 
 class DenseEmbeddingConfig(BaseModel):
     tei_base_url: str = "http://localhost:8080"
-    max_concurrent_requests:int=32
+    max_concurrent_requests: int = 32
     timeout: float = 60.0
     truncate: bool = True
+    max_tokens_per_request: int = 1024
+    max_texts_per_request: int = 16
 
 class SparseEmbeddingConfig(BaseModel):
     tei_base_url: str = "http://localhost:8080"
@@ -44,9 +46,11 @@ class SparseEmbeddingConfig(BaseModel):
 
 class RerankingConfig(BaseModel):
     tei_base_url: str = "http://localhost:8080"
-    max_concurrent_requests:int=32
+    max_concurrent_requests: int = 32
     timeout: float = 60.0
     truncate: bool = True
+    max_tokens_per_request: int = 1024
+    max_texts_per_request: int = 16
 
 
 class MilvusConfig(BaseModel):

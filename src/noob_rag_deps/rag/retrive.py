@@ -46,6 +46,12 @@ class RetrieveParams(BaseModel):
         default=None,
         description="rerank 分数阈值，仅保留 rerank_score >= 阈值的结果；None 表示不按阈值筛选",
     )
+    dense_weight: float = Field(
+        default=0.8, ge=0, le=1, description="混合检索中 dense 向量权重"
+    )
+    sparse_weight: float = Field(
+        default=0.2, ge=0, le=1, description="混合检索中 sparse 向量权重"
+    )
 
 
 class RetrieveResult(BaseModel):
@@ -99,6 +105,8 @@ class VDBRetrieveService:
         use_rerank: bool = True,
         rerank_top_n: int = 5,
         rerank_score_threshold: float | None = None,
+        dense_weight: float = 0.8,
+        sparse_weight: float = 0.2,
         client=None,
     ):
         _validate_tenant_id(tenant_id)
@@ -113,6 +121,8 @@ class VDBRetrieveService:
         self.use_rerank = use_rerank
         self.rerank_top_n = rerank_top_n
         self.rerank_score_threshold = rerank_score_threshold
+        self.dense_weight = dense_weight
+        self.sparse_weight = sparse_weight
         self._client = client
 
     @property
@@ -134,6 +144,8 @@ class VDBRetrieveService:
         use_rerank: bool = True,
         rerank_top_n: int = 5,
         rerank_score_threshold: float | None = None,
+        dense_weight: float = 0.8,
+        sparse_weight: float = 0.2,
     ) -> "VDBRetrieveService":
         """工厂方法：校验 tenant_id，初始化 VDB，检查 collection 存在后返回实例。"""
         _validate_tenant_id(tenant_id)
@@ -157,6 +169,8 @@ class VDBRetrieveService:
             use_rerank=use_rerank,
             rerank_top_n=rerank_top_n,
             rerank_score_threshold=rerank_score_threshold,
+            dense_weight=dense_weight,
+            sparse_weight=sparse_weight,
             client=client,
         )
 
@@ -199,8 +213,7 @@ class VDBRetrieveService:
             expr=expr,
         )
 
-        # TODO: 混合搜索 权重 expose
-        ranker = WeightedRanker(0.8, 0.2)
+        ranker = WeightedRanker(self.dense_weight, self.sparse_weight)
 
         res = self._client.hybrid_search(
             collection_name=self.collection_name,
@@ -250,7 +263,8 @@ class VDBRetrieveService:
                     "score": rerank_score,
                 })
 
-        if self.rerank_score_threshold is not None:
+        
+        if self.use_rerank and self.rerank_score_threshold is not None:
             items = [
                 i for i in items
                 if i.get("rerank_score") is not None

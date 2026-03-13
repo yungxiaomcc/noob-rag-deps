@@ -21,6 +21,13 @@ from structlog.stdlib import (
 
 from noob_rag_deps.config import LogConfig
 
+
+class _StructlogQueueHandler(logging.handlers.QueueHandler):
+    """覆盖 Python 3.12+ 的 prepare()，避免其将 structlog 的 event dict (record.msg) 格式化为字符串。"""
+    def prepare(self, record: logging.LogRecord) -> logging.LogRecord:
+        return record
+
+
 _LISTENER: logging.handlers.QueueListener | None = None
 _QUEUE: queue.Queue[logging.LogRecord] | None = None
 
@@ -130,7 +137,7 @@ def setup_logging(config: LogConfig) -> None:
         respect_handler_level=True,
     )
     _LISTENER.start()
-    queue_handler = logging.handlers.QueueHandler(_QUEUE)
+    queue_handler = _StructlogQueueHandler(_QUEUE)
 
     root = logging.getLogger()
     root.handlers.clear()

@@ -57,6 +57,9 @@ def has_collection(collection_name: str, client: MilvusClient | None = None) -> 
     return collection_name in c.list_collections()
 
 
+
+default_analyzer_params = {"type": "chinese","tokenizer": "jieba"}
+
 def create_default_schema(
     dense_dim: int | None = None,
 ) -> CollectionSchema:
@@ -101,12 +104,14 @@ def create_default_schema(
         field_name=FIELD_SPARSE_VECTOR,
         datatype=DataType.SPARSE_FLOAT_VECTOR,
     )
-    analyzer_params = {"type": "chinese"}
+
+    
+    # https://milvus.io/docs/analyzer-overview.md
     schema.add_field(
         field_name=FIELD_TEXT,
         datatype=DataType.VARCHAR,
         max_length=65535,
-        analyzer_params=analyzer_params,
+        analyzer_params=default_analyzer_params,
         enable_analyzer=True,
         enable_match=True,
     )
@@ -227,3 +232,7 @@ def create_new_collection(
         dense_dim=dim,
         indexes=list(indexes),
     )
+
+
+if __name__ == '__main__':
+    ...
