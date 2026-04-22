@@ -89,6 +89,7 @@ class LogConfig(BaseModel):
 class NoobRagDepsConfig(BaseModel):
 
     dense: DenseEmbeddingConfig
+    sparse: SparseEmbeddingConfig
     reranking: RerankingConfig
     rag: RagConfig
     log: LogConfig = Field(default_factory=LogConfig)

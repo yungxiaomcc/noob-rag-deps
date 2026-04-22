@@ -6,7 +6,7 @@ readme = "README.md"
 authors = [
     { name = "yungxiaomcc", email = "yungxiaomcc@gamil.com" }
 ]
-requires-python = ">=3.12"
+requires-python = ">=3.12,<3.14"
 dependencies = [
     "deepmerge>=2.0",
     "httpx>=0.20",
